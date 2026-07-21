@@ -1,0 +1,26 @@
+# Build/Output
+[Bb]in/
+[Oo]bj/
+
+# VS / IDE
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+packages/
+!packages/repositories.config
+
+# Testes
+TestResults/
+
+# Logs/Temp
+*.log
+*.tmp
+
+# Documentação
+CODIGO_DOCUMENTADO.md
+COMANDOS.md
+GITHUB_RELEASE.md
