@@ -478,7 +478,7 @@ namespace SETTMemoryCleaner.Test
 
                 Assert.IsNotNull(title);
                 Assert.IsNotEmpty(title);
-                StringAssert.Contains("Windows Memory Cleaner", title);
+                StringAssert.Contains("SETT Memory Cleaner", title);
             }
 
             [Test]

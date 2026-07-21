@@ -83,7 +83,7 @@ namespace SETTMemoryCleaner.Test
             {
                 Assert.IsNotNull(Constants.App.Name);
                 Assert.IsFalse(string.IsNullOrEmpty(Constants.App.Name));
-                Assert.AreEqual("WinMemoryCleaner", Constants.App.Name);
+                Assert.AreEqual("SETTMemoryCleaner", Constants.App.Name);
             }
 
             [Test]
@@ -121,7 +121,7 @@ namespace SETTMemoryCleaner.Test
             {
                 Assert.IsNotNull(Constants.App.Title);
                 Assert.IsFalse(string.IsNullOrEmpty(Constants.App.Title));
-                Assert.AreEqual("Windows Memory Cleaner", Constants.App.Title);
+                Assert.AreEqual("SETT Memory Cleaner", Constants.App.Title);
             }
 
             [Test]
