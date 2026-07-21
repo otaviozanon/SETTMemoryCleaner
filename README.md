@@ -1,64 +1,64 @@
 ﻿# SETT Memory Cleaner ⚡
 
-Otimizador de RAM portátil. Usa **APIs nativas do Windows** para limpar memória de forma segura. Interface escura, executável único, sem instalação.
+Portable RAM optimizer. Uses **native Windows APIs** to safely clear memory. Dark UI, single executable, no installation required.
 
-> ⚠️ **Requisito:** Requer privilégios de Administrador.
-
----
-
-## ✨ Recursos
-
-- **Auto-otimização:** Baseado em tempo ou uso.
-- **Atalho Global:** `CTRL + SHIFT + M` para limpar rápido.
-- **Modo Compacto:** UI minimalista.
-- **Início Automático:** Configuração via sistema.
-- **Exclusões:** Lista para ignorar processos.
-- **System Tray:** Monitoramento na bandeja.
-- **Bilíngue:** EN + PT-BR.
+> ⚠️ **Requirement:** Administrator privileges required.
 
 ---
 
-## 🧬 Como Funciona
+## ✨ Features
 
-Usa chamadas documentadas da **Windows API**. Sem truques.
+- **Auto-Optimization:** Time-based or usage threshold.
+- **Global Hotkey:** `CTRL + SHIFT + M` for quick cleanup.
+- **Compact Mode:** Minimalist UI for background monitoring.
+- **Run on Startup:** System-level configuration.
+- **Process Exclusion:** List to ignore specific processes.
+- **System Tray:** Monitor from the tray.
+- **Bilingual:** EN + PT-BR.
 
-| Área | Descrição |
+---
+
+## 🧬 How It Works
+
+Uses documented **Windows API** calls. No tricks.
+
+| Area | Description |
 | :--- | :--- |
-| Combined Page List | Mesclagem páginas |
-| Modified File Cache | Cache disco |
-| Modified Page List | Páginas não salvas |
-| Registry Cache | Cache registro |
-| Standby List | Apps fechados |
-| System File Cache | Arquivos sistema |
-| Working Set | RAM de processos |
+| Combined Page List | Merged page blocks |
+| Modified File Cache | Disk cache flush |
+| Modified Page List | Unsaved pages |
+| Registry Cache | Registry hives |
+| Standby List | Closed app cache |
+| System File Cache | System file cache |
+| Working Set | Process RAM |
 
 ---
 
-## 🔎 Verificação
+## 🔎 Verification
 
-Teste via **Monitor de Recursos** (`resmon.exe`):
-1. Abra `resmon.exe` → aba **Memória**.
-2. Veja barra **Standby**.
-3. No SETT, clique **Optimize**.
-4. Veja **Standby** cair, **Livre** subir.
-
----
-
-## ⚠️ Problemas Comuns
-
-**Antivírus detectou malware?**
-Falso positivo comum. App acessa APIs de baixo nível e cria tarefas agendadas. Código é 100% aberto e seguro. Submeta para análise [Microsoft WDSI](https://www.microsoft.com/en-us/wdsi/filesubmission).
+Test via **Resource Monitor** (`resmon.exe`):
+1. Open `resmon.exe` → **Memory** tab.
+2. Check the **Standby** bar.
+3. In SETT, click **Optimize**.
+4. Watch **Standby** drop, **Free** rise.
 
 ---
 
-## 🔒 Segurança
+## ⚠️ Common Issues
 
-- **Código Aberto:** GPL-3.0.
-- **Sem Dependências:** Portátil.
-- **Transparência:** Apenas chamadas oficiais.
+**Antivirus flagged as malware?**
+Common false positive. The app accesses low-level APIs and creates scheduled tasks. Code is 100% open source and safe. Submit for analysis: [Microsoft WDSI](https://www.microsoft.com/en-us/wdsi/filesubmission).
 
 ---
 
-## 📄 Licença
+## 🔒 Security
 
-GPL-3.0. Veja [LICENSE](/LICENSE).
+- **Open Source:** GPL-3.0.
+- **No Dependencies:** Portable.
+- **Transparency:** Official calls only.
+
+---
+
+## 📄 License
+
+GPL-3.0. See [LICENSE](/LICENSE).
