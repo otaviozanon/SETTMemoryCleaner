@@ -148,7 +148,7 @@ jobs:
         shell: pwsh
         run: |
           Copy-Item "src\bin\Release\SETTMemoryCleaner.exe" -Destination "."
-          Compress-Archive -Path "SETTMemoryCleaner.exe", "README.md", "CHANGELOG.md" -DestinationPath SETTMemoryCleaner.zip
+          Compress-Archive -Path "SETTMemoryCleaner.exe", "README.md" -DestinationPath SETTMemoryCleaner.zip
 
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
