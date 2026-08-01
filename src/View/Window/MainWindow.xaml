@@ -210,8 +210,7 @@
                 </Grid.RowDefinitions>
                 <!-- Column 1: Settings -->
                 <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
-                        Background="#252525"
-                        CornerRadius="8"
+                        Style="{StaticResource CardBorderStyle}"
                         Margin="0, 0, 6, 0"
                         Padding="12, 10">
                     <StackPanel>
@@ -230,7 +229,9 @@
                                 <TextBlock FontSize="13" Margin="0, 0, 8, 0" Text="🗚" VerticalAlignment="Center" />
                                 <Slider IsSnapToTickEnabled="True" Maximum="16" Minimum="12"
                                         Name="FontSizeSlider" TickFrequency="1"
-                                        Value="{Binding FontSize}" Width="100" />
+                                        Value="{Binding FontSize}" Width="90" />
+                                <TextBlock Margin="6, 0, 0, 0" VerticalAlignment="Center" FontSize="10" Opacity="0.6"
+                                           Text="{Binding FontSize, StringFormat={}{0}pt}" />
                             </StackPanel>
                             <ItemsControl ItemsSource="{Binding SettingItems}">
                                 <ItemsControl.ItemTemplate>
@@ -249,8 +250,7 @@
 
                 <!-- Column 2: Memory Areas + Tray Icon -->
                 <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
-                        Background="#252525"
-                        CornerRadius="8"
+                        Style="{StaticResource CardBorderStyle}"
                         Margin="0, 0, 6, 0"
                         Padding="12, 10">
                     <StackPanel>
@@ -288,8 +288,7 @@
 
                 <!-- Column 3: Process Exclusion + Auto Optimization -->
                 <Border Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                        Background="#252525"
-                        CornerRadius="8"
+                        Style="{StaticResource CardBorderStyle}"
                         Margin="0, 0, 0, 0"
                         Padding="12, 10">
                     <StackPanel>
@@ -297,7 +296,7 @@
                     <GroupBox Header="{Binding Path=(local:Localizer.Strings).ProcessExclusionList}"
                               Margin="0, 0, 0, 0">
                         <StackPanel>
-                            <ScrollViewer Height="60" VerticalScrollBarVisibility="Auto" Margin="0, 0, 0, 3" x:Name="ProcessExclusionScrollViewer">
+                            <ScrollViewer Height="90" VerticalScrollBarVisibility="Auto" Margin="0, 0, 0, 3" x:Name="ProcessExclusionScrollViewer">
                                 <ItemsControl ItemsSource="{Binding ProcessExclusionList}" Name="ProcessExclusionList">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
@@ -342,23 +341,33 @@
                               Margin="0, 6, 0, 0">
                         <StackPanel>
                             <TextBlock Text="{Binding AutoOptimizationMemoryIntervalDescription}" TextWrapping="Wrap" FontSize="11" />
-                            <Slider IsSnapToTickEnabled="True"
-                                    Margin="0, 6, 0, 6"
-                                    Maximum="168"
-                                    Minimum="0"
-                                    Name="AutoOptimizationIntervalSlider"
-                                    TickFrequency="1"
-                                    Value="{Binding AutoOptimizationInterval}" />
+                            <StackPanel Orientation="Horizontal">
+                                <Slider IsSnapToTickEnabled="True"
+                                        Margin="0, 6, 0, 6"
+                                        Maximum="168"
+                                        Minimum="0"
+                                        Name="AutoOptimizationIntervalSlider"
+                                        TickFrequency="1"
+                                        Value="{Binding AutoOptimizationInterval}"
+                                        Width="180" />
+                                <TextBlock Margin="6, 0, 0, 0" VerticalAlignment="Center" FontSize="10" Opacity="0.6"
+                                           Text="{Binding AutoOptimizationInterval, StringFormat={}{0}h}" />
+                            </StackPanel>
 
                             <TextBlock Text="{Binding AutoOptimizationMemoryUsageDescription}" TextWrapping="Wrap" FontSize="11" Margin="0, 4, 0, 0" />
-                            <Slider IsSnapToTickEnabled="True"
-                                    Margin="0, 6, 0, 0"
-                                    Maximum="100"
-                                    Minimum="0"
-                                    Name="AutoOptimizationMemoryUsageSlider"
-                                    TickFrequency="1"
-                                    ToolTip="{Binding AutoOptimizationMemoryUsageWarning}"
-                                    Value="{Binding AutoOptimizationMemoryUsage}" />
+                            <StackPanel Orientation="Horizontal">
+                                <Slider IsSnapToTickEnabled="True"
+                                        Margin="0, 6, 0, 0"
+                                        Maximum="100"
+                                        Minimum="0"
+                                        Name="AutoOptimizationMemoryUsageSlider"
+                                        TickFrequency="1"
+                                        ToolTip="{Binding AutoOptimizationMemoryUsageWarning}"
+                                        Value="{Binding AutoOptimizationMemoryUsage}"
+                                        Width="180" />
+                                <TextBlock Margin="6, 6, 0, 0" VerticalAlignment="Center" FontSize="10" Opacity="0.6"
+                                           Text="{Binding AutoOptimizationMemoryUsage, StringFormat={}{0}%}" />
+                            </StackPanel>
                         </StackPanel>
                     </GroupBox>
 

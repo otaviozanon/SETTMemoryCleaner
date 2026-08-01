@@ -258,6 +258,17 @@
                 </Setter>
             </Style>
             <!-- ComboBox (END) -->
+            <Style x:Key="CardBorderStyle" TargetType="{x:Type Border}">
+                <Setter Property="Background" Value="#252525" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBorder}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#2A2A2A" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
             <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource FrameworkElementBase}">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="BorderThickness" Value="0" />
@@ -269,15 +280,20 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0"
-                                           Foreground="#FF8C42"
-                                           FontWeight="SemiBold"
-                                           FontSize="11"
-                                           Text="{TemplateBinding Header}"
-                                           Margin="0, 4, 0, 8"
-                                           HorizontalAlignment="Center"
-                                           TextAlignment="Center"
-                                           Typography.Capitals="AllSmallCaps" />
+                                <StackPanel Grid.Row="0" HorizontalAlignment="Center">
+                                    <TextBlock Foreground="#FF8C42"
+                                               FontWeight="SemiBold"
+                                               FontSize="11"
+                                               Text="{TemplateBinding Header}"
+                                               Margin="0, 4, 0, 4"
+                                               TextAlignment="Center"
+                                               Typography.Capitals="AllSmallCaps" />
+                                    <Border Background="#FF8C42"
+                                            Height="2"
+                                            CornerRadius="1"
+                                            Margin="0, 0, 0, 6"
+                                            Width="36" />
+                                </StackPanel>
                                 <ContentPresenter Grid.Row="1"
                                                   Margin="{TemplateBinding Padding}" />
                             </Grid>
