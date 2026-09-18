@@ -187,6 +187,6 @@ jobs:
             release_artifacts/SETTMemoryCleaner.exe
             release_artifacts/SETTMemoryCleaner.zip
             release_artifacts/checksums.txt
-          draft: true
+          draft: false
           generate_release_notes: false
 
