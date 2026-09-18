@@ -16,7 +16,7 @@ namespace SETTMemoryCleaner
     /// FUNCIONAMENTO:
     /// - Construtor estático: Carrega Registry → Salva (cria defaults se não existir)
     /// - Propriedades: Get/Set auto-salvam em Registry a cada mudança
-    /// - Localização: HKCU\SOFTWARE\SETTMemoryCleaner
+    /// - Localização: HKLM\SOFTWARE\SETTMemoryCleaner
     ///
     /// USADO POR: MainViewModel, ComputerService, App.xaml.cs
     /// PERSISTE EM: Windows Registry (HKEY_CURRENT_USER)
@@ -53,9 +53,6 @@ namespace SETTMemoryCleaner
         // AUTO-OTIMIZAÇÃO: Threshold RAM % (0 = desabilitado)
         // Ex: 80 = otimizar quando RAM > 80%
         public static int AutoOptimizationMemoryUsage { get; set; }
-
-        // AUTO-UPDATE: Verificar novas versões?
-        public static bool AutoUpdate { get; set; }
 
         // Fechar app após otimização?
         public static bool CloseAfterOptimization { get; set; }
@@ -132,7 +129,6 @@ namespace SETTMemoryCleaner
             AlwaysOnTop = false;
             AutoOptimizationInterval = 0;
             AutoOptimizationMemoryUsage = 0;
-            AutoUpdate = true;
             CloseAfterOptimization = false;
             CloseToTheNotificationArea = false;
             CompactMode = false;
@@ -184,7 +180,6 @@ namespace SETTMemoryCleaner
                         AlwaysOnTop = Convert.ToBoolean(key.GetValue(Helper.NameOf(() => AlwaysOnTop), AlwaysOnTop), _culture);
                         AutoOptimizationInterval = Convert.ToInt32(key.GetValue(Helper.NameOf(() => AutoOptimizationInterval), AutoOptimizationInterval), _culture);
                         AutoOptimizationMemoryUsage = Convert.ToInt32(key.GetValue(Helper.NameOf(() => AutoOptimizationMemoryUsage), AutoOptimizationMemoryUsage), _culture);
-                        AutoUpdate = Convert.ToBoolean(key.GetValue(Helper.NameOf(() => AutoUpdate), AutoUpdate), _culture);
                         CloseAfterOptimization = Convert.ToBoolean(key.GetValue(Helper.NameOf(() => CloseAfterOptimization), CloseAfterOptimization), _culture);
                         CloseToTheNotificationArea = Convert.ToBoolean(key.GetValue(Helper.NameOf(() => CloseToTheNotificationArea), CloseToTheNotificationArea), _culture);
                         CompactMode = Convert.ToBoolean(key.GetValue(Helper.NameOf(() => CompactMode), CompactMode), _culture);
@@ -299,7 +294,6 @@ namespace SETTMemoryCleaner
                         key.SetValue(Helper.NameOf(() => AlwaysOnTop), AlwaysOnTop ? 1 : 0);
                         key.SetValue(Helper.NameOf(() => AutoOptimizationInterval), AutoOptimizationInterval);
                         key.SetValue(Helper.NameOf(() => AutoOptimizationMemoryUsage), AutoOptimizationMemoryUsage);
-                        key.SetValue(Helper.NameOf(() => AutoUpdate), AutoUpdate ? 1 : 0);
                         key.SetValue(Helper.NameOf(() => CloseAfterOptimization), CloseAfterOptimization ? 1 : 0);
                         key.SetValue(Helper.NameOf(() => CloseToTheNotificationArea), CloseToTheNotificationArea ? 1 : 0);
                         key.SetValue(Helper.NameOf(() => CompactMode), CompactMode ? 1 : 0);

@@ -114,8 +114,6 @@ namespace SETTMemoryCleaner
                 _computerService = new ComputerService();
                 _hotKeyService = new HotkeyService();
 
-                Settings.AutoUpdate = true;
-
                 // Simular Windows 10
                 Computer.OperatingSystem.IsWindows81OrGreater = true;
                 Computer.OperatingSystem.IsWindows8OrGreater = true;
@@ -265,33 +263,6 @@ namespace SETTMemoryCleaner
         public string AutoOptimizationMemoryUsageWarning
         {
             get { return string.Format(Localizer.Culture, Localizer.Strings.AutoOptimizationInterval, Constants.App.AutoOptimizationMemoryUsageInterval); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [automatic update].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [automatic update]; otherwise, <c>false</c>.
-        /// </value>
-        public bool AutoUpdate
-        {
-            get { return Settings.AutoUpdate; }
-            set
-            {
-                try
-                {
-                    IsBusy = true;
-
-                    Settings.AutoUpdate = Helper.IsAutoUpdateSupported && value;
-                    Settings.Save();
-
-                    RaisePropertyChanged();
-                }
-                finally
-                {
-                    IsBusy = false;
-                }
-            }
         }
 
         /// <summary>
@@ -1069,7 +1040,6 @@ namespace SETTMemoryCleaner
                     new List<ObservableItem<bool>>
                     {
                        new ObservableItem<bool>(Localizer.Strings.AlwaysOnTop, () => AlwaysOnTop, value => AlwaysOnTop = value),
-                       new ObservableItem<bool>(Localizer.Strings.AutoUpdate, () => AutoUpdate, value => AutoUpdate = value, Helper.IsAutoUpdateSupported),
                        new ObservableItem<bool>(Localizer.Strings.CloseAfterOptimization, () => CloseAfterOptimization, value => CloseAfterOptimization = value),
                        new ObservableItem<bool>(Localizer.Strings.CloseToTheNotificationArea, () => CloseToTheNotificationArea, value => CloseToTheNotificationArea = value),
                        new ObservableItem<bool>(Localizer.Strings.CreateStartMenuShortcut, () => CreateStartMenuShortcut, value => CreateStartMenuShortcut = value),
@@ -1206,8 +1176,11 @@ namespace SETTMemoryCleaner
         {
             get
             {
+                var version = App.Version != null
+                    ? string.Format(Localizer.Culture, " v{0}", App.Version.ToString(3))
+                    : string.Empty;
                 var beta = App.IsInDebugMode ? "\u200E? (BETA)\u200E" : null;
-                return string.Format(Localizer.Culture, "{0}{1}", Constants.App.Title, beta);
+                return string.Format(Localizer.Culture, "{0}{1}{2}", Constants.App.Title, version, beta);
             }
         }
 
@@ -1767,9 +1740,6 @@ namespace SETTMemoryCleaner
                     // Delay
                     if (_cancellationTokenSource.Token.WaitHandle.WaitOne(60000))
                         break;
-
-                    // Update app
-                    Updater.Update();
 
                     // App priority
                     App.SetPriority(Settings.RunOnPriority);

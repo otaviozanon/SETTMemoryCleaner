@@ -24,9 +24,6 @@ namespace SETTMemoryCleaner
             // (evita otimizações muito frequentes que degradam performance)
             public const int AutoOptimizationMemoryUsageInterval = 5; // Minute
 
-            // AUTO-UPDATE: Verifica nova versão a cada 24 horas
-            public const int AutoUpdateInterval = 24; // Hour
-
             // EMBEDDED RESOURCES: Caminho base recursos embarcados .exe
             // Ex: "SETTMemoryCleaner.Resources.Localization.English.json"
             public const string EmbeddedResourcePath = "SETTMemoryCleaner.Resources.";
@@ -59,11 +56,6 @@ namespace SETTMemoryCleaner
             // Formato versão: "1.0.0"
             public const string VersionFormat = "{0}.{1}.{2}";
 
-            public static class Author
-            {
-                public const string Name = "Otavio Zanon";
-            }
-
             public static class Certificate
             {
                 public static class Release
@@ -82,14 +74,6 @@ namespace SETTMemoryCleaner
                 public static readonly string Path = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             }
 
-            public static class Donation
-            {
-                public static readonly Uri BitcoinUri = new Uri("https://www.blockchain.com/explorer/addresses/btc/bc1qu884q5r2uqugvdhyk8l6waakumeve7jykqp7ap");
-                public static readonly Uri EthereumUri = new Uri("https://www.blockchain.com/explorer/addresses/eth/0xb71A94733B0578D155D9A765E0d2C4dA0f44156d");
-                public static readonly Uri GitHubSponsorUri = new Uri("https://github.com/sponsors/otaviozanon");
-                public static readonly Uri KofiUri = new Uri("https://ko-fi.com/otaviozanon");
-            }
-
             public static class Registry
             {
                 public static class Key
@@ -102,12 +86,8 @@ namespace SETTMemoryCleaner
             public static class Repository
             {
                 private const string GitHub = "https://github.com/otaviozanon/SETTMemoryCleaner";
-                private const string GitHubRaw = "https://raw.githubusercontent.com/otaviozanon/SETTMemoryCleaner/main";
 
-                public static readonly Uri AboutUri = new Uri(GitHub + "?tab=readme-ov-file#windows-memory-cleaner");
-                public static readonly Uri AssemblyInfoUri = new Uri(GitHubRaw + "/src/Properties/AssemblyInfo.cs");
-                public static readonly Uri DownloadUri = new Uri(GitHub + "?tab=readme-ov-file#-download");
-                public static readonly Uri LatestExeUri = new Uri(GitHub + "/releases/latest/download/SETTMemoryCleaner.exe");
+                public static readonly Uri AboutUri = new Uri(GitHub);
                 public static readonly Uri Uri = new Uri(GitHub);
             }
         }

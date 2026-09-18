@@ -12,10 +12,10 @@ namespace SETTMemoryCleaner
     {
         #region Fields
 
-        private string _about, _add, _alwaysOnTop, _autoOptimization, _autoOptimizationInterval, _autoUpdate;
+        private string _about, _add, _alwaysOnTop, _autoOptimization, _autoOptimizationInterval;
         private string _background;
         private string _close, _closeAfterOptimization, _closeToTheNotificationArea, _collapse, _combinedPageList, _createStartMenuShortcut;
-        private string _dangerLevel, _donate, _donationMessage, _donationTitle;
+        private string _dangerLevel;
         private string _error, _errorAdminPrivilegeRequired, _errorCanNotSaveLog, _errorMemoryAreaOptimizationNotSupported, _errorResetCommand, _everyHour, _exit, _expand;
         private string _free;
         private string _garbageCollector;
@@ -29,7 +29,7 @@ namespace SETTMemoryCleaner
         private string _reason, _registryCache, _remove, _reset, _resetCommand, _resetConfirmation, _runOnLowPriority, _runOnStartup;
         private string _schedule, _seconds, _settings, _showMemoryUsage, _showOptimizationNotifications, _showVirtualMemory, _standbyList, _standbyListLowPriority, _startMinimized, _systemFileCache;
         private string _text, _trayIcon;
-        private string _updatedToVersion, _used, _useTransparentBackground;
+        private string _used, _useTransparentBackground;
         private string _virtualMemory;
         private string _warningLevel, _whenFreePhysicalMemoryIsBelow, _workingSet;
         private string _yes;
@@ -71,13 +71,6 @@ namespace SETTMemoryCleaner
         {
             get { return _autoOptimizationInterval; }
             private set { _autoOptimizationInterval = value.Capitalize(); }
-        }
-
-        [DataMember]
-        public string AutoUpdate
-        {
-            get { return _autoUpdate; }
-            private set { _autoUpdate = value.Capitalize(); }
         }
 
         [DataMember]
@@ -134,27 +127,6 @@ namespace SETTMemoryCleaner
         {
             get { return _dangerLevel; }
             private set { _dangerLevel = value.Capitalize(); }
-        }
-
-        [DataMember]
-        public string Donate
-        {
-            get { return _donate; }
-            private set { _donate = value.Capitalize(); }
-        }
-
-        [DataMember]
-        public string DonationMessage
-        {
-            get { return _donationMessage; }
-            private set { _donationMessage = value.Capitalize(); }
-        }
-
-        [DataMember]
-        public string DonationTitle
-        {
-            get { return _donationTitle; }
-            private set { _donationTitle = value.Capitalize(); }
         }
 
         [DataMember]
@@ -491,13 +463,6 @@ namespace SETTMemoryCleaner
         {
             get { return _trayIcon; }
             private set { _trayIcon = value.Capitalize(); }
-        }
-
-        [DataMember]
-        public string UpdatedToVersion
-        {
-            get { return _updatedToVersion; }
-            private set { _updatedToVersion = value.Capitalize(); }
         }
 
         [DataMember]

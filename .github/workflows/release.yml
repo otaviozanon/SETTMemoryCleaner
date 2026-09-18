@@ -7,11 +7,6 @@ on:
     paths:
       - "src/**"
   workflow_dispatch:
-    inputs:
-      force_version_from_file:
-        description: 'Set to "true" to IGNORE tag bumping and use the version from AssemblyInfo.cs.'
-        type: boolean
-        default: false
 
 permissions:
   contents: write
@@ -42,28 +37,8 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Bump version tag
-        id: bump
-        if: github.event.inputs.force_version_from_file != 'true'
-        shell: pwsh
-        run: |
-          git fetch --tags
-          $currentTag = git tag --sort=-creatordate | Where-Object { $_ -match '^\d+\.\d+\.\d+$' } | Select-Object -First 1
-          if (-not $currentTag) {
-            $major = 1; $minor = 0; $patch = 0
-          } else {
-            $parts = $currentTag.Split('.')
-            $major = [int]$parts[0]
-            $minor = [int]$parts[1]
-            $patch = [int]$parts[2] + 1
-          }
-          $newTag = "$($major).$($minor).$($patch)"
-          "new_tag=$newTag" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
-          Write-Host "New tag generated (from bump): $newTag"
-
-      - name: Get Version from AssemblyInfo (Force)
-        id: get_from_asm
-        if: github.event.inputs.force_version_from_file == 'true'
+      - name: Get Version from AssemblyInfo
+        id: version
         shell: pwsh
         run: |
           $assemblyInfoPath = "src/Properties/AssemblyInfo.cs"
@@ -75,39 +50,8 @@ jobs:
           }
           $fullVersion = $versionLine.Matches.Groups[1].Value
           $newTag = ($fullVersion -split '\.')[0..2] -join '.'
-          Write-Host "New tag generated (from file): $newTag"
+          Write-Host "Release version (from AssemblyInfo.cs): $newTag"
           "new_tag=$newTag" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
-
-      - name: Set Release Version
-        id: version
-        shell: pwsh
-        run: |
-          $newTag = "${{ steps.bump.outputs.new_tag || steps.get_from_asm.outputs.new_tag }}"
-          Write-Host "Consolidated version for release: $newTag"
-          "new_tag=$newTag" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
-
-      - name: Check AssemblyVersion matches new tag
-        if: github.event.inputs.force_version_from_file != 'true'
-        shell: pwsh
-        run: |
-          $expectedVersion = "${{ steps.version.outputs.new_tag }}"
-          Write-Host "Checking for expected release version: $expectedVersion"
-          $assemblyInfoPath = "src/Properties/AssemblyInfo.cs"
-          $assemblyInfo = Get-Content $assemblyInfoPath
-          $versionLine = $assemblyInfo | Select-String -Pattern 'AssemblyVersion\("([0-9\.]+)"\)'
-          if (-not $versionLine) {
-               Write-Host "::error::Could not find AssemblyVersion in $assemblyInfoPath"
-               exit 1
-          }
-          $fullVersion = $versionLine.Matches.Groups[1].Value
-          $fileVersion = ($fullVersion -split '\.')[0..2] -join '.'
-          Write-Host "Found version in file: $fileVersion (full: $fullVersion)"
-          if ($fileVersion -eq $expectedVersion) {
-               Write-Host "✅ AssemblyVersion matches the new tag."
-          } else {
-               Write-Host "::error::Version mismatch! Expected '$expectedVersion' but found '$fileVersion' in AssemblyInfo.cs. Please update the file before releasing."
-               exit 1
-          }
 
       - name: Restore NuGet packages
         shell: pwsh

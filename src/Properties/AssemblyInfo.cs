@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using SETTMemoryCleaner;
 
-[assembly: AssemblyCompany(Constants.App.Author.Name)]
+[assembly: AssemblyCompany(Constants.App.Name)]
 [assembly: AssemblyCopyright(Constants.App.License)]
 [assembly: AssemblyDescription(Constants.App.Title)]
 [assembly: AssemblyKeyFile(Constants.App.KeyFile)]
 [assembly: AssemblyProduct(Constants.App.Name)]
 [assembly: AssemblyTitle(Constants.App.Title)]
-[assembly: AssemblyVersion("1.0.0")]
+[assembly: AssemblyVersion("1.0.1")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
 [assembly: Guid(Constants.App.Id)]

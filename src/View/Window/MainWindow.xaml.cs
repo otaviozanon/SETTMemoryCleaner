@@ -129,20 +129,6 @@ namespace SETTMemoryCleaner
         }
 
         /// <summary>
-        /// Called when the donate menu item is clicked.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void OnDonateMenuItemClick(object sender, RoutedEventArgs e)
-        {
-            var window = new DonationWindow(this);
-
-            window.ShowDialog();
-
-            SetFocusTo(Optimize);
-        }
-
-        /// <summary>
         /// Called when the help button is clicked.
         /// </summary>
         /// <param name="sender">The sender.</param>

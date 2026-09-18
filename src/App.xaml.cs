@@ -17,7 +17,7 @@ using System.Windows.Threading;
 namespace SETTMemoryCleaner
 {
     /// <summary>
-    /// Windows Memory Cleaner
+    /// SETT Memory Cleaner
     /// </summary>
     public partial class App : IDisposable
     {
@@ -288,16 +288,6 @@ namespace SETTMemoryCleaner
         private void OnProcessExit(object sender, EventArgs e)
         {
             Dispose();
-
-            try
-            {
-                if (Updater.Process != null)
-                    Process.Start(Updater.Process);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error starting update process." + ex);
-            }
         }
 
         /// <summary>
@@ -567,7 +557,7 @@ namespace SETTMemoryCleaner
                                 Constants.App.Title,
                                 Path,
                                 WindowsIdentity.GetCurrent().User.Value,
-                                string.Format(CultureInfo.InvariantCulture, "WMC {0} ({1})", string.Format(Localizer.Culture, Constants.App.VersionFormat, Version.Major, Version.Minor, Version.Build), Environment.UserName),
+                                string.Format(CultureInfo.InvariantCulture, "SETT {0} ({1})", string.Format(Localizer.Culture, Constants.App.VersionFormat, Version.Major, Version.Minor, Version.Build), Environment.UserName),
                                 DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture)
                             );
 

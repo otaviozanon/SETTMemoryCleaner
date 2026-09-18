@@ -219,17 +219,6 @@ namespace SETTMemoryCleaner.Test
             }
 
             [Test]
-            public void AutoUpdate_SetValue_UpdatesSettings()
-            {
-                var initialValue = _viewModel.AutoUpdate;
-                var newValue = !initialValue;
-
-                _viewModel.AutoUpdate = newValue;
-
-                Assert.AreEqual(newValue, _viewModel.AutoUpdate);
-            }
-
-            [Test]
             public void Brushes_ReturnsNonEmptyCollection()
             {
                 var brushes = _viewModel.Brushes;
@@ -741,47 +730,6 @@ namespace SETTMemoryCleaner.Test
                 _viewModel.RightButton = newButton;
 
                 Assert.AreEqual(newButton, _viewModel.RightButton);
-            }
-        }
-
-        #endregion
-
-        #region DonationViewModel Tests
-
-
-        public sealed class DonationViewModelTests : IDisposable
-        {
-            private INotificationService _notificationService;
-            private DonationViewModel _viewModel;
-
-            public DonationViewModelTests()
-            {
-                SetUp();
-            }
-
-            public void SetUp()
-            {
-                _notificationService = new NotificationService(new NotifyIcon());
-                _viewModel = new DonationViewModel(_notificationService);
-            }
-
-            public void Dispose()
-            {
-                _viewModel = null;
-
-                if (_notificationService != null)
-                {
-                    _notificationService.Dispose();
-                    _notificationService = null;
-                }
-
-                GC.SuppressFinalize(this);
-            }
-
-            [Test]
-            public void Constructor_InitializesViewModel()
-            {
-                Assert.IsNotNull(_viewModel);
             }
         }
 

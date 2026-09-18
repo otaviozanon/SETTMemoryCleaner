@@ -11,7 +11,7 @@
             FlowDirection="{Binding Path=(local:Localizer.Language).Direction}"
             FocusManager.FocusedElement="{Binding ElementName=RightButton}"
             Foreground="{DynamicResource SecondaryForeground}"
-            Icon="/SETTMemoryCleaner;component/Resources/Images/win-memory-cleaner.ico"
+            Icon="/SETTMemoryCleaner;component/Resources/Images/sett-icon.ico"
             ResizeMode="NoResize"
             SizeToContent="WidthAndHeight"
             SnapsToDevicePixels="True"
