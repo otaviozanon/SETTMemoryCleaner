@@ -130,7 +130,7 @@ namespace SETTMemoryCleaner
             AutoOptimizationInterval = 0;
             AutoOptimizationMemoryUsage = 0;
             CloseAfterOptimization = false;
-            CloseToTheNotificationArea = false;
+            CloseToTheNotificationArea = true;
             CompactMode = false;
             CreateStartMenuShortcut = true;
             FontSize = 14;
