@@ -1041,7 +1041,6 @@ namespace SETTMemoryCleaner
                     {
                        new ObservableItem<bool>(Localizer.Strings.AlwaysOnTop, () => AlwaysOnTop, value => AlwaysOnTop = value),
                        new ObservableItem<bool>(Localizer.Strings.CloseAfterOptimization, () => CloseAfterOptimization, value => CloseAfterOptimization = value),
-                       new ObservableItem<bool>(Localizer.Strings.CloseToTheNotificationArea, () => CloseToTheNotificationArea, value => CloseToTheNotificationArea = value),
                        new ObservableItem<bool>(Localizer.Strings.CreateStartMenuShortcut, () => CreateStartMenuShortcut, value => CreateStartMenuShortcut = value),
                        new ObservableItem<bool>(Localizer.Strings.RunOnLowPriority, () => RunOnLowPriority, value => RunOnLowPriority = value),
                        new ObservableItem<bool>(Localizer.Strings.RunOnStartup, () => RunOnStartup, value => RunOnStartup = value),

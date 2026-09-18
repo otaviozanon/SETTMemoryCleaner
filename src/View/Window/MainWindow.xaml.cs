@@ -96,16 +96,11 @@ namespace SETTMemoryCleaner
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)
         {
-            if (Settings.CloseToTheNotificationArea)
-            {
-                SetFocusTo(Optimize);
+            SetFocusTo(Optimize);
 
-                CloseToTheNotificationArea();
+            CloseToTheNotificationArea();
 
-                App.ReleaseMemory();
-            }
-            else
-                App.Shutdown();
+            App.ReleaseMemory();
         }
 
         /// <summary>
@@ -192,16 +187,8 @@ namespace SETTMemoryCleaner
         {
             if (Settings.CloseAfterOptimization)
             {
-                if (Settings.CloseToTheNotificationArea)
-                {
-                    SetFocusTo(Optimize, force: true);
-                    CloseToTheNotificationArea();
-                }
-                else
-                {
-                    Thread.Sleep(1000);
-                    App.Shutdown();
-                }
+                SetFocusTo(Optimize, force: true);
+                CloseToTheNotificationArea();
             }
             else
             {
