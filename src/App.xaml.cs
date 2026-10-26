@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.ServiceProcess;
 using System.Threading;
@@ -501,139 +503,154 @@ namespace SETTMemoryCleaner
             {
                 if (enable)
                 {
-                    var isTaskCreated = false;
+                    var taskXml = string.Format
+                        (
+                            CultureInfo.InvariantCulture,
+                            @"<?xml version=""1.0"" encoding=""UTF-16""?>
+                            <Task version=""1.2""
+                                xmlns=""http://schemas.microsoft.com/windows/2004/02/mit/task"">
+                                <RegistrationInfo>
+                                    <Author>{3}</Author>
+                                    <Description>Runs {0} at logon.</Description>
+                                    <Date>{4}</Date>
+                                </RegistrationInfo>
+                                <Triggers>
+                                    <LogonTrigger>
+                                        <Enabled>true</Enabled>
+                                    </LogonTrigger>
+                                </Triggers>
+                                <Principals>
+                                    <Principal id=""Author"">
+                                        <UserId>{2}</UserId>
+                                        <LogonType>InteractiveToken</LogonType>
+                                        <RunLevel>HighestAvailable</RunLevel>
+                                    </Principal>
+                                </Principals>
+                                <Settings>
+                                    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+                                    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+                                    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+                                    <AllowHardTerminate>true</AllowHardTerminate>
+                                    <StartWhenAvailable>true</StartWhenAvailable>
+                                    <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
+                                    <IdleSettings>
+                                        <WaitTimeout>PT10M</WaitTimeout>
+                                        <StopOnIdleEnd>false</StopOnIdleEnd>
+                                        <RestartOnIdle>false</RestartOnIdle>
+                                    </IdleSettings>
+                                    <AllowStartOnDemand>true</AllowStartOnDemand>
+                                    <Enabled>true</Enabled>
+                                    <Hidden>false</Hidden>
+                                    <RunOnlyIfIdle>false</RunOnlyIfIdle>
+                                    <WakeToRun>false</WakeToRun>
+                                    <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>
+                                    <Priority>7</Priority>
+                                </Settings>
+                                <Actions Context=""Author"">
+                                    <Exec>
+                                        <Command>""{1}""</Command>
+                                    </Exec>
+                                </Actions>
+                            </Task>",
+                            Constants.App.Title,
+                            Path,
+                            WindowsIdentity.GetCurrent().User.Value,
+                            string.Format(CultureInfo.InvariantCulture, "SETT {0} ({1})", string.Format(Localizer.Culture, Constants.App.VersionFormat, Version.Major, Version.Minor, Version.Build), Environment.UserName),
+                            DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture)
+                        );
 
-                    try
-                    {
-                        var taskXml = string.Format
-                            (
-                                CultureInfo.InvariantCulture,
-                                @"<?xml version=""1.0"" encoding=""UTF-16""?>
-                                <Task version=""1.2""
-	                                xmlns=""http://schemas.microsoft.com/windows/2004/02/mit/task"">
-	                                <RegistrationInfo>
-		                                <Author>{3}</Author>
-		                                <Description>Runs {0} at logon.</Description>
-		                                <Date>{4}</Date>
-	                                </RegistrationInfo>
-	                                <Triggers>
-		                                <LogonTrigger>
-			                                <Enabled>true</Enabled>
-		                                </LogonTrigger>
-	                                </Triggers>
-	                                <Principals>
-		                                <Principal id=""Author"">
-			                                <UserId>{2}</UserId>
-			                                <LogonType>InteractiveToken</LogonType>
-			                                <RunLevel>HighestAvailable</RunLevel>
-		                                </Principal>
-	                                </Principals>
-	                                <Settings>
-		                                <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
-		                                <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
-		                                <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
-		                                <AllowHardTerminate>true</AllowHardTerminate>
-		                                <StartWhenAvailable>true</StartWhenAvailable>
-		                                <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
-		                                <IdleSettings>
-			                                <WaitTimeout>PT10M</WaitTimeout>
-			                                <StopOnIdleEnd>false</StopOnIdleEnd>
-			                                <RestartOnIdle>false</RestartOnIdle>
-		                                </IdleSettings>
-		                                <AllowStartOnDemand>true</AllowStartOnDemand>
-		                                <Enabled>true</Enabled>
-		                                <Hidden>false</Hidden>
-		                                <RunOnlyIfIdle>false</RunOnlyIfIdle>
-		                                <WakeToRun>false</WakeToRun>
-		                                <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>
-		                                <Priority>7</Priority>
-	                                </Settings>
-	                                <Actions Context=""Author"">
-		                                <Exec>
-			                                <Command>""{1}""</Command>
-		                                </Exec>
-	                                </Actions>
-                                </Task>",
-                                Constants.App.Title,
-                                Path,
-                                WindowsIdentity.GetCurrent().User.Value,
-                                string.Format(CultureInfo.InvariantCulture, "SETT {0} ({1})", string.Format(Localizer.Culture, Constants.App.VersionFormat, Version.Major, Version.Minor, Version.Build), Environment.UserName),
-                                DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture)
-                            );
-
-                                var tempXmlFile = System.IO.Path.GetTempFileName();
-
-                        File.WriteAllText(tempXmlFile, taskXml);
-
-                        var createStartInfo = new ProcessStartInfo("schtasks")
-                        {
-                            Arguments = string.Format(CultureInfo.InvariantCulture, @"/CREATE /F /TN ""{0}"" /XML ""{1}""", Constants.App.Title, tempXmlFile),
-                            CreateNoWindow = true,
-                            UseShellExecute = false,
-                            WindowStyle = ProcessWindowStyle.Hidden,
-                            RedirectStandardError = true
-                        };
-
-                        using (var createProcess = Process.Start(createStartInfo))
-                        {
-                            var errorMessage = createProcess.StandardError.ReadToEnd();
-                            createProcess.WaitForExit();
-
-                            if (createProcess.ExitCode == Constants.WinAPI.SystemErrorCode.ErrorSuccess)
-                                isTaskCreated = true;
-                            else
-                                Logger.Error(string.Format(Localizer.Culture, "XML task creation failed (will attempt fallback). Error: {0}", errorMessage));
-                        }
-
-                        Helper.DeleteFile(tempXmlFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(string.Format(Localizer.Culture, "An exception occurred during XML task creation (will attempt fallback): {0}", ex.GetMessage()));
-                    }
-
-                    if (!isTaskCreated)
-                    {
-                        Logger.Information("Attempting basic fallback method to create startup task.");
-
-                        var createStartInfo = new ProcessStartInfo("schtasks")
-                        {
-                            Arguments = string.Format(CultureInfo.InvariantCulture, @"/CREATE /F /SC ONLOGON /TN ""{0}"" /TR ""{1}"" /RU ""{2}""", Constants.App.Title, Path, Environment.UserName),
-                            CreateNoWindow = true,
-                            UseShellExecute = false,
-                            WindowStyle = ProcessWindowStyle.Hidden,
-                            RedirectStandardError = true
-                        };
-
-                        using (var createProcess = Process.Start(createStartInfo))
-                        {
-                            var errorMessage = createProcess.StandardError.ReadToEnd();
-                            createProcess.WaitForExit();
-
-                            if (createProcess.ExitCode != Constants.WinAPI.SystemErrorCode.ErrorSuccess)
-                                Logger.Error(string.Format(Localizer.Culture, "Fallback task creation also failed for '{0}'. Error: {1}", Constants.App.Title, errorMessage));
-                        }
-                    }
+                    RegisterScheduledTask(Constants.App.Title, taskXml);
                 }
                 else
                 {
-                    var deleteStartInfo = new ProcessStartInfo("schtasks")
-                    {
-                        Arguments = string.Format(CultureInfo.InvariantCulture, @"/DELETE /F /TN ""{0}""", Constants.App.Title),
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    };
-
-                    using (var deleteProcess = Process.Start(deleteStartInfo))
-                    {
-                        deleteProcess.WaitForExit();
-                    }
+                    DeleteScheduledTask(Constants.App.Title);
                 }
             }
             catch (Exception e)
             {
                 Logger.Error(string.Format(Localizer.Culture, "An error occurred while managing the scheduled task for app startup. Error: {0}", e.GetMessage()));
+            }
+        }
+
+        /// <summary>
+        /// Registers (creates or updates) a Logon scheduled task using the native Task Scheduler COM API.
+        /// Avoids spawning external processes (schtasks.exe) or writing temporary XML files to disk,
+        /// which are patterns commonly flagged by antivirus heuristic/ML engines.
+        /// </summary>
+        /// <param name="taskName">Name of the scheduled task.</param>
+        /// <param name="taskXml">Task definition in Task Scheduler XML format.</param>
+        private static void RegisterScheduledTask(string taskName, string taskXml)
+        {
+            object service = null;
+            object rootFolder = null;
+
+            try
+            {
+                var serviceType = Type.GetTypeFromProgID("Schedule.Service");
+                service = Activator.CreateInstance(serviceType);
+
+                serviceType.InvokeMember("Connect", BindingFlags.InvokeMethod, null, service, null);
+
+                rootFolder = serviceType.InvokeMember("GetFolder", BindingFlags.InvokeMethod, null, service, new object[] { @"\" });
+
+                // TASK_CREATE_OR_UPDATE = 6, TASK_LOGON_INTERACTIVE_TOKEN = 3
+                rootFolder.GetType().InvokeMember
+                (
+                    "RegisterTask",
+                    BindingFlags.InvokeMethod,
+                    null,
+                    rootFolder,
+                    new object[] { taskName, taskXml, 6, null, null, 3, string.Empty }
+                );
+            }
+            finally
+            {
+                if (rootFolder != null)
+                    Marshal.FinalReleaseComObject(rootFolder);
+
+                if (service != null)
+                    Marshal.FinalReleaseComObject(service);
+            }
+        }
+
+        /// <summary>
+        /// Deletes a scheduled task using the native Task Scheduler COM API.
+        /// </summary>
+        /// <param name="taskName">Name of the scheduled task.</param>
+        private static void DeleteScheduledTask(string taskName)
+        {
+            object service = null;
+            object rootFolder = null;
+
+            try
+            {
+                var serviceType = Type.GetTypeFromProgID("Schedule.Service");
+                service = Activator.CreateInstance(serviceType);
+
+                serviceType.InvokeMember("Connect", BindingFlags.InvokeMethod, null, service, null);
+
+                rootFolder = serviceType.InvokeMember("GetFolder", BindingFlags.InvokeMethod, null, service, new object[] { @"\" });
+
+                rootFolder.GetType().InvokeMember("DeleteTask", BindingFlags.InvokeMethod, null, rootFolder, new object[] { taskName, 0 });
+            }
+            catch (COMException)
+            {
+                // Task does not exist - nothing to delete
+            }
+            catch (TargetInvocationException ex)
+            {
+                if (!(ex.InnerException is COMException))
+                    throw;
+
+                // Task does not exist - nothing to delete
+            }
+            finally
+            {
+                if (rootFolder != null)
+                    Marshal.FinalReleaseComObject(rootFolder);
+
+                if (service != null)
+                    Marshal.FinalReleaseComObject(service);
             }
         }
 
